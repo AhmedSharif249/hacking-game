@@ -1,0 +1,256 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <windows.h> // used this mainly for the sleep function
+#include <time.h>
+
+#define MAX_ATTEMPTS 5  // the maximum number of attempts to crack the password
+
+// declaring the function
+const char* generate_random_password(); 
+
+// Function to implement typing effect for the hacking feel
+void type_effect(const char *text, int delay_ms) {
+    while (*text) {
+        printf("%c", *text++);
+        fflush(stdout);
+        Sleep(delay_ms);  // the delay between characters
+    }
+}
+
+// Displays the text at the beginning of the game
+void welcome_screen() {
+    type_effect("Booting up hacking console...\n", 30);
+    type_effect("Loading modules...\n", 30);
+    type_effect("Ready.\n\n", 30);
+}
+
+// Chooses a random word from the predefined hacker-themed password list
+const char* generate_random_password() {
+    const char *words[] = {
+        "hack", "code", "root", "crack"
+    };
+    int word_count = sizeof(words) / sizeof(words[0]);
+    srand(time(NULL));  // Seed random generator with current time
+    return words[rand() % word_count];  // Return a random word
+}
+
+// Number guessing game for the second part
+void number_guessing_game() {
+    int target = rand() % 100 + 1;  // Random number selector between 1 and 100
+    int guess = 0;
+    time_t start_time = time(NULL);
+    int time_limit_seconds = 30;
+
+    type_effect("\n[Encryption Decryption...]\n", 40);
+    Sleep(800);
+    type_effect(">> Decryption complete.\n", 40);
+    Sleep(500);
+    type_effect("\n[NUMBER GUESSING GAME]\n", 30);
+    type_effect("Guess the secret number (between 1 and 100) in 30 seconds!\n", 30);
+
+    while (difftime(time(NULL), start_time) < time_limit_seconds) {
+        printf("\nEnter your guess: ");
+        scanf("%d", &guess);
+
+        if (guess < target) {
+            printf("Higher...\n");
+        } else if (guess > target) {
+            printf("Lower...\n");
+        } else {
+            printf("Correct! You guessed the number!\n");
+            return;
+        }
+    }
+
+    printf("\n[ERROR] Time's up! You failed to guess the number.\n");
+}
+
+// Main password guessing function
+void crack_password(const char *password) {
+    char guess[10];
+    int attempt = 0;
+    int password_len = strlen(password);
+
+    // Starts countdown timer
+    time_t start_time = time(NULL);
+    int time_limit_seconds = 60;  // with a 1 minute time limit
+
+    printf("Brute Force Mode: ACTIVE\n");
+    printf("Password length: %d\n", password_len);
+    printf("You have 1 minute to crack the password.\n");
+
+    while (attempt < MAX_ATTEMPTS) {
+        // Check time limit
+        if (difftime(time(NULL), start_time) > time_limit_seconds) {
+            printf("\n[ERROR] Time's up! Connection lost. The system has locked you out.\n");
+            return;
+        }
+
+        // Prompt user for guess
+        printf("Attempt %d/%d: ", attempt + 1, MAX_ATTEMPTS);
+        scanf("%s", guess);
+
+        // Validate length
+        if (strlen(guess) != password_len) {
+            printf("Password must be %d letters.\n", password_len);
+            continue;
+        }
+
+        // Correct guess
+        if (strcmp(guess, password) == 0) {
+            printf("Password Cracked! Access Granted.\n");
+            Sleep(1000);
+
+            // Message from Anonymous (continuation of the game)
+            type_effect("\n[Incoming Transmission...]\n", 40);
+            Sleep(500);
+            type_effect("Anonymous: You did it.\n", 30);
+            Sleep(400);
+            type_effect("Anonymous: You cracked the code...\n", 30);
+            Sleep(400);
+            type_effect("Anonymous: I see you got the hint from my last message.\n", 30);
+            Sleep(400);
+            type_effect("Anonymous: You're not just an average joe huh.\n", 30);
+            Sleep(400);
+            type_effect("Anonymous: Now access the final file. Everything you were looking for is inside.\n\n", 30);
+            Sleep(600);
+
+            // Fake secure file directory list
+            type_effect("\nAccessing secure files...\n", 40);
+            Sleep(1000);
+
+            const char* files[] = {
+                "vault_key.dat", "delta_logs.txt", "root_protocol.txt",
+                "system_backup.sys", "blacksite_config.ini", "codebook.enc"
+            };
+
+            // Prints files one by one, each on a separate line
+            for (int i = 0; i < 6; i++) {
+                printf("- %s\n", files[i]);  // Each file on a new line
+                Sleep(400);  // Simulate delay between printing files
+            }
+
+            // final file is opened before the number guessing
+            Sleep(800);
+            type_effect("\nOpening root_protocol.txt...\n", 40);
+            Sleep(1200);
+
+            // Add number guessing game after opening root_protocol.txt
+            number_guessing_game();
+
+            // Final choices after number guessing game
+            type_effect("\n[FINAL CHOICE]\n", 30);
+            type_effect("Choose your next action:\n", 30);
+            type_effect("1. Steal Data\n", 30);
+            type_effect("2. Destroy the System\n", 30);
+            type_effect("3. Take Control\n\n", 30);
+
+            // Get user input for the final choice
+            int choice;
+            printf("Enter your choice (1/2/3): ");
+            scanf("%d", &choice);
+
+            switch (choice) {
+                case 1:
+                    printf("Stealing Data...\n");
+                    type_effect("Sending data to mainframe...\n", 30);
+                    Sleep(3000);
+                    printf("\nData exfiltrated successfully. You were never here.\n");
+                    printf("\n[ERROR] System breach detected. Initiating self-destruct sequence.\n");
+                    type_effect("Purge sequence starting...\n", 30);
+                    Sleep(1000);
+                    for (int i = 3; i > 0; i--) {
+                        printf("System meltdown in %d...\n", i);
+                        Sleep(1000);
+                    }
+                    type_effect("\n[Incoming Transmission...]\n", 30);
+                    Sleep(500);
+                    type_effect("Anonymous: Good choice.\n", 30);
+                    Sleep(400);
+                    type_effect("Anonymous: Now, the data will never go into the wrong hands.\n", 30);
+                    break;
+                case 2:
+                    type_effect("Initiating system purge...\n", 30);
+                    Sleep(1000);
+                    for (int i = 3; i > 0; i--) {
+                        printf("System meltdown in %d...\n", i);
+                        Sleep(1000);
+                    }
+                    type_effect("\n[Incoming Transmission...]\n", 30);
+                    Sleep(500);
+                    type_effect("Anonymous: Good choice.\n", 30);
+                    Sleep(400);
+                    type_effect("Anonymous: Now, the data will never go into the wrong hands.\n", 30);
+                    break;
+                case 3:
+                    type_effect("Admin privileges granted.\n", 30);
+                    Sleep(1000);
+                    type_effect("You are now the root user. System obeys only you.\n", 30);
+                    Sleep(1000);
+                    type_effect("\n[Incoming Transmission...]\n", 30);
+                    Sleep(500);
+                    type_effect("Anonymous: I have no choice now.\n", 30);
+                    Sleep(400);
+                    type_effect("Anonymous: You hold the keys to everything. I have no option but to work for you.\n", 30);
+                    Sleep(500);
+                    break;
+                default:
+                    printf("Invalid choice. Please restart the mission.\n");
+                    return;
+            }
+
+            type_effect("\nMission complete.\n", 30);
+            type_effect("Thank you for playing!\n", 30);
+            system("cls");
+            return;
+        } else {
+            int correct = 0, in_place = 0;
+            for (int i = 0; i < password_len; i++) {
+                if (guess[i] == password[i]) {
+                    in_place++;
+                } else {
+                    for (int j = 0; j < password_len; j++) {
+                        if (guess[i] == password[j] && guess[j] != password[j]) {
+                            correct++;
+                            break;
+                        }
+                    }
+                }
+            }
+            printf("Feedback: %d correct letters, %d in correct position.\n", correct + in_place, in_place);
+        }
+
+        attempt++;  // Move to next attempt
+    }
+
+    printf("\nAccess Denied. Too many failed attempts.\n");
+}
+
+int main() {
+    welcome_screen();  // Show boot sequence
+
+    const char* password = generate_random_password();
+    int password_len = strlen(password);
+
+    printf("The password is 4 letters long.\n");
+
+    printf("Connection established. Press Enter to continue...\n");
+    getchar();  // Waits for the user to press Enter before proceeding
+
+    type_effect("\n[Incoming Transmission...]\n", 40);
+    Sleep(500);
+    type_effect("Anonymous: We have tapped into the system for you.\n", 30);
+    Sleep(300);
+    type_effect("Anonymous: Your mission is to hack in, guess the right code, and crack the system.\n", 30);
+    Sleep(300);
+    type_effect("Anonymous: Only then will you reach the root of the program. And you will have me as your servant.\n", 30);
+    Sleep(300);
+    type_effect("Anonymous: We have narrowed down possible access codes. Think like a hacker.\n", 30);
+    Sleep(400);
+    type_effect("Anonymous: Use my hint from this message. Good luck, operator.\n\n", 30);
+    Sleep(500);
+
+    crack_password(password);
+    return 0;
+}

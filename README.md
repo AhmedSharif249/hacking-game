@@ -1,1 +1,5 @@
-# hacking-game
+To compile this game you need MiniGW. 
+To install miniGW go to the website and downoald the installer, then select mingw32-gcc-g++ and  mingw32-base, these are essential to run the code, click apply changes and let it download. after that Go to Control Panel > System > Advanced System Settings > Environment Variables, find path and click edit, dd a new path C:\MinGW\bin, then go to command prompt and type 'gcc --version' if you see version info then you've done it correctly. 
+Next, open the command prompt, "WIN+R" then type cmd, then "cd" plus the path to where the code is, if it works correctly you will move onto the next line without error messages, then type in gcc "file name".c -o hacking.exe
+Go to your desktop or where the file is saved and you will find the game. 
+(this has been done on windows, i'm not sure how it will work on other platorms.)
